@@ -1,5 +1,5 @@
 image:
-  tag: "REPLACE_ME"
+  tag: "sha-31ac814"
 
 replicaCount: 1
 
