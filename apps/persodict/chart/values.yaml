@@ -1,0 +1,53 @@
+replicaCount: 1
+
+image:
+  repository: 403874533389.dkr.ecr.us-east-1.amazonaws.com/persodict-api
+  tag: "REPLACE_ME"
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: false
+  className: alb
+  host: ""
+  annotations: {}
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+
+env:
+  NODE_ENV: production
+  PORT: "3000"
+
+externalSecret:
+  enabled: true
+  secretStoreName: aws-secrets-manager
+  secretName: persodict-secrets
+  secretPath: ""
+
+podAnnotations: {}
+podLabels: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

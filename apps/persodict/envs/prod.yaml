@@ -1,0 +1,39 @@
+image:
+  tag: "REPLACE_ME"
+
+replicaCount: 2
+
+env:
+  NODE_ENV: production
+  PORT: "3000"
+
+ingress:
+  enabled: true
+  className: alb
+  host: ""
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+
+externalSecret:
+  enabled: true
+  secretStoreName: aws-secrets-manager
+  secretName: persodict-secrets
+  secretPath: persodict/prod
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
